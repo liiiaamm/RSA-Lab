@@ -1,5 +1,6 @@
 import sys 
 import rsa 
+import os 
 class InfMayorSup(Exception):
     pass
 def print_titulo():
@@ -42,18 +43,42 @@ def inputs()-> tuple:
 
     return nombre, lim_inf,lim_sup,padding
 
+def crear_directorios(directorio:str):
+    
+    try:
+        os.mkdir(directorio)
+        print(f"Directorio '{directorio}' creado correctamente")
+    except FileExistsError:
+        print(f"Directorio '{directorio}' ya existe.")
+   
+    except Exception as e:
+        print(f"Un error ha ocurrido: {e}")
+
+def crear_ficheros_en_ruta(directorio:str,nombre:str,n:int,e:int,padding:int,d:int):
+    _ = os.path.join(directorio,nombre)
+    with open(f"pub_{nombre}.txt","w") as pb:
+        pb.write(str(n))
+        pb.write(str(e))
+        pb.write(str(padding))
+    
+    with open(f"priv_{nombre}.txt","w") as pr:
+        pr.write(str(d))
 
 if __name__ == "__main__":
     print_titulo()
     nombre,lim_inf,lim_sup,padding = inputs()
     n,e,d = rsa.generar_claves(lim_inf,lim_sup)
-    with open(f"pub_{nombre}.txt","w") as pb:
-        pb.write(n)
-        pb.write(e)
-        pb.write(padding)
+    directorio ="Usuarios"
+    crear_directorios(directorio)
+    crear_ficheros_en_ruta(directorio,nombre,n,e,padding,d)
     
-    with open(f"priv_{nombre}.txt","w") as pr:
-        pr.write(d)
+
+
+
+    
+
+    
+    
 
     
     
