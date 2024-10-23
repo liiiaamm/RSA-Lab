@@ -67,7 +67,6 @@ def aplicar_padding(m:int,digitos_padding:int)->int:
     padding_aplicado = int(str(m)+str(random.randint(lim_inf,lim_sup)))
     return padding_aplicado
 
-
 def eliminar_padding(m:int,digitos_padding:int)->int:
     """Dado un mensaje con padding de digitos_padding cifras al
     final del mismo, elimina dichas cifras aleatorias y devuelve
@@ -92,8 +91,6 @@ def eliminar_padding(m:int,digitos_padding:int)->int:
     no_padding = str_m[-digitos_padding:]
     return int(no_padding)
 
-
-
 def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
     """Dado un mensaje m entero, un módulo y exponente que formen parte
     de una clave pública de RSA, con m<n*10^{-digitos_padding}, y un número
@@ -115,7 +112,6 @@ def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
     num_cfirado = modular.potencia_mod_p(m_padding,e,n)
     return num_cfirado
 
-
 def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
     """Dado un cifrado c entero que haya sido cifrado con RSA usando
     digitos_padding cifras de padding al final del mensaje y el 
@@ -136,8 +132,6 @@ def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
     """
     m = modular.potencia_mod_p(c,d,n)
     return m 
-    
-
 
 def codificar_cadena(s:str)->List[int]:
     """Convierte una cadena de caracteres a la lista de
