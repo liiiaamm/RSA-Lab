@@ -1,6 +1,6 @@
 import sys
 import os 
-
+import re
 RESET = "\033[0m"
 OKBLUE = "\033[94m" #Inputs en azul
 OKGREEN = "\033[92m" #Prints en verde
@@ -14,7 +14,7 @@ class UserNotFoundError(Exception):
 def leer_ficheros(fichero:str):
     datos = []
     with open(fichero,"r") as f:
-        datos.append(f.read())
+        datos.extend([line.strip() for line in f])
 
     return datos 
 
@@ -24,14 +24,20 @@ def cargar_claves(usuario1,usuario2):
     usuario2_pb = f"Usuarios/pub_{usuario2}.txt"
     usuarios = [usuario1_pr,usuario1_pb,usuario2_pb]
 
-    if  not (os.path.isfile(usuario1_pb) and os.path.isfile(usuario1_pr) and os.path.isfile(usuario2_pb)):
-        raise UserNotFoundError("El usuario introducido no está en el sistema")
+    try:
+        if not all([os.path.isfile(archivo) for archivo in usuarios]):
+            raise UserNotFoundError()  
+    except UserNotFoundError as error:
+        print("Algún usuario introducido no se encuentra en la base de datos")
+        return None
+
 
     claves = {}
     pattern = r".+\/(.+)\.txt"
     for usuario in usuarios:
         datos = leer_ficheros(usuario)
-        claves[usuario] = datos #esto se cambiaria por lo comentado
+        clave = re.match(pattern, usuario).group(1)
+        claves[clave] = datos #esto se cambiaria por lo comentado
     print(claves)
     return claves
 
@@ -58,11 +64,8 @@ if __name__ == "__main__":
     usuario1 = sys.argv[1]
     usuario2 = sys.argv[2]
 
-    try:
-        clavesU1,clavesU2 = cargar_claves(usuario1,usuario2)
-    except UserNotFoundError as UNFE:
-        print(OKRED, f"Error de Usuario: {UNFE}", RESET)
-        sys.exit(1)
+    claves = cargar_claves(usuario1,usuario2)
 
-    interactions(clavesU1,clavesU2)
+    
+
 
