@@ -130,8 +130,9 @@ def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
 
     Raises: None
     """
-    m = modular.potencia_mod_p(c,d,n)
-    return m 
+    numero_descifrado = modular.potencia_mod_p(c,d,n)
+    descifrado_sin_padding = eliminar_padding(numero_descifrado,digitos_padding)
+    return descifrado_sin_padding 
 
 def codificar_cadena(s:str)->List[int]:
     """Convierte una cadena de caracteres a la lista de
@@ -187,7 +188,7 @@ def cifrar_cadena_rsa(s:str,n:int,e:int,digitos_padding:int)->List[int]:
     Raises: None
     """
     cadena_codificada = codificar_cadena(s)
-    cadena_cifrada = [cifrar_rsa(letter,n,e,digitos_padding) for letter in cadena_codificada]
+    cadena_cifrada = [cifrar_rsa(num,n,e,digitos_padding) for num in cadena_codificada]
     return cadena_cifrada
 
 
