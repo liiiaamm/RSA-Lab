@@ -191,8 +191,6 @@ def cifrar_cadena_rsa(s:str,n:int,e:int,digitos_padding:int)->List[int]:
     return cadena_cifrada
 
 
-
-
 def descifrar_cadena_rsa(cList:List[int],n:int,d:int,digitos_padding:int)->str:
     """Dado un mensaje cifrado con RSA usando la clave pública cuya clave privada asociada es (n,d)
     y digitos_padding cifras de padding al final del mensaje, devuelve la cadena orignal.
@@ -208,7 +206,10 @@ def descifrar_cadena_rsa(cList:List[int],n:int,d:int,digitos_padding:int)->str:
     Raises:
         ValueError: Si, tras decodificar, alguno de los enteros del mensaje no representa un caracter unicode válido.    
     """
-    pass
+    cadena_descifrada = [descifrar_rsa(c,n,d,digitos_padding) for c in cList]
+    cadena_decodificada = decodificar_cadena(cadena_descifrada)
+    return cadena_decodificada
+    
 
 
 def romper_clave(n:int,e:int)->int:
