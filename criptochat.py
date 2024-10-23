@@ -1,6 +1,7 @@
 import sys
 import os 
 import re
+import rsa
 RESET = "\033[0m"
 OKBLUE = "\033[94m" #Inputs en azul
 OKGREEN = "\033[92m" #Prints en verde
@@ -32,23 +33,30 @@ def cargar_claves(usuario1,usuario2):
         return None
 
 
-    claves = {}
+    claves = []
     pattern = r".+\/(.+)\.txt"
     for usuario in usuarios:
         datos = leer_ficheros(usuario)
-        clave = re.match(pattern, usuario).group(1)
-        claves[clave] = datos #esto se cambiaria por lo comentado
-    print(claves)
+        claves.append(datos)
     return claves
 
 
-def interactions(clavesU1,clavesU2):
+def interactions(claves):
+    usuario_pr_1 = claves[0]
+    usuario_pb_1 = claves[1]
+    usuario_pb_2 = claves[2]
+ 
     while True:
         accion =  input(f"{OKBLUE}Desea cifrar (C), descifrar (D) o salir (S)?{RESET}")
         if accion == "C":
             mensaje = input(f"{OKBLUE}Escribe el mensaje a cifrar: {RESET}")
+            cifrado = rsa.cifrar_cadena_rsa(mensaje,int(usuario_pb_2[0]),int(usuario_pb_2[1]),int(usuario_pb_2[2]))
+            print(f"Tu mensaje cifrado es: \n {cifrado}")
         elif accion == "D":
-            mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado: {RESET}")
+            mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado(recuerda introdirlo con el formato número espacio número...): {RESET}").split(" ")
+            mensaje_cifrado_int = [int(numero) for numero in mensaje_cifrado]
+            descrifrado = rsa.descifrar_cadena_rsa(mensaje_cifrado_int,int(usuario_pb_1[0]),int(usuario_pr_1[0]),int(usuario_pb_1[2]))
+            print(f"Tu mensaje descrifrado es: \n {descrifrado}")
         elif accion == "S":
             print(OKGREEN,"Saliendo del programa",RESET)
             break
@@ -65,6 +73,9 @@ if __name__ == "__main__":
     usuario2 = sys.argv[2]
 
     claves = cargar_claves(usuario1,usuario2)
+    
+    interactions(claves)
+    
 
     
 
