@@ -170,8 +170,12 @@ def decodificar_cadena(m:List[int])->str:
     Example:
         decodificar_cadena([161, 72, 111, 108, 97, 32, 109, 117, 110, 100, 111, 33])="¡Hola mundo!"
     """
-    cadena_descodificada = ''.join([chr(ord) for ord in m])
-    return cadena_descodificada    
+    try:
+        cadena_descodificada = ''.join([chr(ord) for ord in m])
+        return cadena_descodificada
+    except ValueError:
+        print(OKRED, "Error de valor: El entero no representa un carácter unicode válido", RESET)
+        raise ValueError
 
 
 def cifrar_cadena_rsa(s:str,n:int,e:int,digitos_padding:int)->List[int]:
@@ -210,9 +214,12 @@ def descifrar_cadena_rsa(cList:List[int],n:int,d:int,digitos_padding:int)->str:
         ValueError: Si, tras decodificar, alguno de los enteros del mensaje no representa un caracter unicode válido.    
     """
     cadena_descifrada = [descifrar_rsa(c,n,d,digitos_padding) for c in cList]
-    cadena_decodificada = decodificar_cadena(cadena_descifrada)
-    return cadena_decodificada
-    
+    try:
+        cadena_decodificada = decodificar_cadena(cadena_descifrada)
+        return cadena_decodificada
+    except ValueError:
+        raise ValueError
+
 
 
 def romper_clave(n:int,e:int)->int:
@@ -235,7 +242,7 @@ def romper_clave(n:int,e:int)->int:
         return d
     except ValueError as VE:
         print(OKRED, f"Error de valor: {VE}", RESET)
-        return None
+        raise ValueError
 
 
 def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:

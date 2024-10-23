@@ -51,12 +51,15 @@ def interactions(claves):
         if accion == "C":
             mensaje = input(f"{OKBLUE}Escribe el mensaje a cifrar: {RESET}")
             cifrado = rsa.cifrar_cadena_rsa(mensaje,int(usuario_pb_2[0]),int(usuario_pb_2[1]),int(usuario_pb_2[2]))
-            print(f"Tu mensaje cifrado es: \n {cifrado}")
+            print(f"{OKGREEN}Tu mensaje cifrado es: \n {cifrado}{RESET}")
         elif accion == "D":
-            mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado(recuerda introdirlo con el formato número espacio número...): {RESET}").split(" ")
+            mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado(recuerda introdirlo con el formato número espacio número): {RESET}").split(" ")
             mensaje_cifrado_int = [int(numero) for numero in mensaje_cifrado]
-            descrifrado = rsa.descifrar_cadena_rsa(mensaje_cifrado_int,int(usuario_pb_1[0]),int(usuario_pr_1[0]),int(usuario_pb_1[2]))
-            print(f"Tu mensaje descrifrado es: \n {descrifrado}")
+            try:
+                descrifrado = rsa.descifrar_cadena_rsa(mensaje_cifrado_int,int(usuario_pb_1[0]),int(usuario_pr_1[0]),int(usuario_pb_1[2]))
+                print(f"{OKGREEN}Tu mensaje descrifrado es: \n {descrifrado}{RESET}")
+            except ValueError:
+                pass
         elif accion == "S":
             print(OKGREEN,"Saliendo del programa",RESET)
             break
