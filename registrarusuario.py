@@ -55,14 +55,17 @@ def crear_directorios(directorio:str):
         print(f"Un error ha ocurrido: {e}")
 
 def crear_ficheros_en_ruta(directorio:str,nombre:str,n:int,e:int,padding:int,d:int):
-    _ = os.path.join(directorio,nombre)
-    with open(f"pub_{nombre}.txt","w") as pb:
-        pb.write(str(n))
-        pb.write(str(e))
-        pb.write(str(padding))
+    nombre_pb = f"pub_{nombre}.txt"
+    nombre_pr = f"priv_{nombre}.txt"
+    ruta_pb = os.path.join(directorio,nombre_pb)
+    ruta_pr = os.path.join(directorio,nombre_pr)
+    with open(ruta_pb,"w") as pb:
+        pb.write(f"{str(n)}\n")
+        pb.write(f"{str(e)}\n")
+        pb.write(f"{str(padding)}\n")
     
-    with open(f"priv_{nombre}.txt","w") as pr:
-        pr.write(str(d))
+    with open(ruta_pr,"w") as pr:
+        pr.write(f"{str(d)}\n")
 
 if __name__ == "__main__":
     print_titulo()
