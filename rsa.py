@@ -12,7 +12,7 @@ Integrantes:
 Descripción:
 Librería para la realización de cifrado y descifrado usando el algoritmo RSA.
 """
-import modular as m 
+import modular 
 from typing import Tuple,List
 import random
 
@@ -33,15 +33,15 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
 
     Raises: None
     """
-    lista_primos = m.lista_primos(min_primo,max_primo)
+    lista_primos = modular.lista_primos(min_primo,max_primo)
     p1,p2 = (random.choice(lista_primos),random.choice(lista_primos))
     n = p1*p2
     phi_n = (p1-1)*(p2-1)
     e = random.randint(2,phi_n-1)
 
-    while not m.coprimos(phi_n,e):
+    while not modular.coprimos(phi_n,e):
         e = random.randint(2,phi_n-1)
-    d = m.inversa_mod_p(e,phi_n)
+    d = modular.inversa_mod_p(e,phi_n)
     return (n,e,d) 
 
 def aplicar_padding(m:int,digitos_padding:int)->int:
@@ -112,8 +112,8 @@ def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
     Raises: None
     """
     m_padding = aplicar_padding(m,digitos_padding)
-    num_cfirado = m.
-    pass
+    num_cfirado = modular.potencia_mod_p(m_padding,e,n)
+    return num_cfirado
 
 
 def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
@@ -134,7 +134,9 @@ def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
 
     Raises: None
     """
-    pass
+    m = modular.potencia_mod_p(c,d,n)
+    return m 
+    
 
 
 def codificar_cadena(s:str)->List[int]:
@@ -152,8 +154,8 @@ def codificar_cadena(s:str)->List[int]:
     Example:
         codificar_cadena("¡Hola mundo!")=[161, 72, 111, 108, 97, 32, 109, 117, 110, 100, 111, 33]
     """
-    pass
-
+    cadena_codificada = [ord(letra) for letra in s]
+    return cadena_codificada    
 
 def decodificar_cadena(m:List[int])->str:
     """Convierte una lista de enteros que representen caracteres unicode
