@@ -88,7 +88,7 @@ def eliminar_padding(m:int,digitos_padding:int)->int:
         aplicar_padding(2432,2)=24
     """
     str_m = str(m)
-    no_padding = str_m[-digitos_padding:]
+    no_padding = str_m[:-digitos_padding]
     return int(no_padding)
 
 def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
@@ -167,7 +167,8 @@ def decodificar_cadena(m:List[int])->str:
     Example:
         decodificar_cadena([161, 72, 111, 108, 97, 32, 109, 117, 110, 100, 111, 33])="¡Hola mundo!"
     """
-    pass
+    cadena_descodificada = ''.join([chr(ord) for ord in m])
+    return cadena_descodificada    
 
 
 def cifrar_cadena_rsa(s:str,n:int,e:int,digitos_padding:int)->List[int]:
@@ -185,7 +186,11 @@ def cifrar_cadena_rsa(s:str,n:int,e:int,digitos_padding:int)->List[int]:
 
     Raises: None
     """
-    pass
+    cadena_codificada = codificar_cadena(s)
+    cadena_cifrada = [cifrar_rsa(letter,n,e,digitos_padding) for letter in cadena_codificada]
+    return cadena_cifrada
+
+
 
 
 def descifrar_cadena_rsa(cList:List[int],n:int,d:int,digitos_padding:int)->str:
