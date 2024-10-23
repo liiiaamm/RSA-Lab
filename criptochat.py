@@ -1,23 +1,39 @@
 import sys
+import os 
 
 RESET = "\033[0m"
 OKBLUE = "\033[94m" #Inputs en azul
 OKGREEN = "\033[92m" #Prints en verde
 OKRED = "\033[91m" #Errores en rojo
 
+
 class UserNotFoundError(Exception):
     pass
 
 
+def leer_ficheros(fichero:str):
+    datos = []
+    with open(fichero,"r") as f:
+        datos.append(f.read())
+
+    return datos 
+
 def cargar_claves(usuario1,usuario2):
-    """
-    Comprueba si los usuarios existen y carga las claves publico/privadas del usuario 1 y las publicas del usuario 2
-    """
-    if usuario1 == "no_existe" or usuario2 == "no_existe":
+    usuario1_pr = f"Usuarios/priv_{usuario1}.txt"
+    usuario1_pb = f"Usuarios/pub_{usuario1}.txt"
+    usuario2_pb = f"Usuarios/pub_{usuario2}.txt"
+    usuarios = [usuario1_pr,usuario1_pb,usuario2_pb]
+
+    if  not (os.path.isfile(usuario1_pb) and os.path.isfile(usuario1_pr) and os.path.isfile(usuario2_pb)):
         raise UserNotFoundError("El usuario introducido no está en el sistema")
-    clavesU1 = {'publica': 'clave_publica_usuario1', 'privada': 'clave_privada_usuario1'}
-    clavesU2 = {'publica': 'clave_publica_usuario2'}
-    return clavesU1,clavesU2
+
+    claves = {}
+    pattern = r".+\/(.+)\.txt"
+    for usuario in usuarios:
+        datos = leer_ficheros(usuario)
+        claves[usuario] = datos #esto se cambiaria por lo comentado
+    print(claves)
+    return claves
 
 
 def interactions(clavesU1,clavesU2):
