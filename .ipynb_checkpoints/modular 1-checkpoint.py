@@ -493,6 +493,4 @@ def ecuacion_cuadratica(a: int, b: int, c: int, p: int):
         return (min(x1, x2), max(x1, x2))
 
 
-print(factorizar(753318313747))
-m = 829158 *908532
-print(inversa_mod_p(894395,m))
+

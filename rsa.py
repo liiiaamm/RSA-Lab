@@ -12,7 +12,7 @@ Integrantes:
 Descripción:
 Librería para la realización de cifrado y descifrado usando el algoritmo RSA.
 """
-import modular
+import modular 1
 from typing import Tuple,List
 
 
