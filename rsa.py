@@ -15,6 +15,8 @@ Librería para la realización de cifrado y descifrado usando el algoritmo RSA.
 import modular 
 from typing import Tuple,List
 import random
+RESET = "\033[0m"
+OKRED = "\033[91m" #Errores en rojo
 
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     """Toma dos primos entre min_primo (incluido) y max_primo (excluido) y devuelve
@@ -227,7 +229,13 @@ def romper_clave(n:int,e:int)->int:
     Raises:
         ValueError: Si no existe ninguna clave privada d compatible con la clave pública (n,e).
     """
-    pass
+    try:
+        p = modular.euler(n)
+        d = modular.inversa_mod_p(e,p)
+        return d
+    except ValueError as VE:
+        print(OKRED, f"Error de valor: {VE}", RESET)
+        return None
 
 
 def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
