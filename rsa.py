@@ -6,15 +6,15 @@ ICAI, Universidad Pontificia Comillas
 
 Grupo: GPxxx
 Integrantes:
-    - XX
-    - XX
+    - Liam Esgueva González 
+    - Sergio Fernández Cordero
 
 Descripción:
 Librería para la realización de cifrado y descifrado usando el algoritmo RSA.
 """
-import modular 1
+import modular as m 
 from typing import Tuple,List
-
+import random
 
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     """Toma dos primos entre min_primo (incluido) y max_primo (excluido) y devuelve
@@ -33,7 +33,16 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
 
     Raises: None
     """
-    pass
+    lista_primos = m.lista_primos(min_primo,max_primo)
+    p1,p2 = (random.choice(lista_primos),random.choice(lista_primos))
+    n = p1*p2
+    phi_n = (p1-1)*(p2-1)
+    e = random.randint(2,phi_n-1)
+
+    while not m.coprimos(phi_n,e):
+        e = random.randint(2,phi_n-1)
+    d = m.inversa_mod_p(e,phi_n)
+    return (n,e,d) 
 
 def aplicar_padding(m:int,digitos_padding:int)->int:
     """Dado un mensaje y un número de dígitos de padding, añade
@@ -54,7 +63,9 @@ def aplicar_padding(m:int,digitos_padding:int)->int:
         aplicar_padding(24,3)=24718
         aplicar_padding(24,3)=24845
     """
-    pass
+    lim_inf,lim_sup = 10**(digitos_padding-1),10**(digitos_padding)-1
+    padding_aplicado = int(str(m)+str(random.randint(lim_inf,lim_sup)))
+    return padding_aplicado
 
 
 def eliminar_padding(m:int,digitos_padding:int)->int:
@@ -77,7 +88,10 @@ def eliminar_padding(m:int,digitos_padding:int)->int:
         aplicar_padding(2454,3)=2
         aplicar_padding(2432,2)=24
     """
-    pass
+    str_m = str(m)
+    no_padding = str_m[-digitos_padding:]
+    return int(no_padding)
+
 
 
 def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
@@ -97,6 +111,8 @@ def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
 
     Raises: None
     """
+    m_padding = aplicar_padding(m,digitos_padding)
+    num_cfirado = m.
     pass
 
 
