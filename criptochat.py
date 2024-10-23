@@ -22,17 +22,16 @@ def cargar_claves(usuario1,usuario2):
 
 def interactions(clavesU1,clavesU2):
     while True:
-        action =  input(f"{OKBLUE}Desea cifrar (C), descifrar (D) o salir (S)?{RESET}")
-        if action == "C":
+        accion =  input(f"{OKBLUE}Desea cifrar (C), descifrar (D) o salir (S)?{RESET}")
+        if accion == "C":
             mensaje = input(f"{OKBLUE}Escribe el mensaje a cifrar: {RESET}")
-        elif action == "D":
+        elif accion == "D":
             mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado: {RESET}")
-        elif action == "S":
+        elif accion == "S":
             print(OKGREEN,"Saliendo del programa",RESET)
             break
         else: 
             print(OKRED, "Introduzca una opción válida", RESET)
-
 
 
 if __name__ == "__main__":
