@@ -51,7 +51,7 @@ def interactions(claves):
         if accion == "C":
             mensaje = input(f"{OKBLUE}Escribe el mensaje a cifrar: {RESET}")
             cifrado = rsa.cifrar_cadena_rsa(mensaje,int(usuario_pb_2[0]),int(usuario_pb_2[1]),int(usuario_pb_2[2]))
-            print(f"{OKGREEN}Tu mensaje cifrado es: \n {cifrado}{RESET}")
+            print(f"{OKGREEN}Tu mensaje cifrado es: \n {' '.join(map(str, cifrado))}{RESET}")
         elif accion == "D":
             mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado(recuerda introdirlo con el formato número espacio número): {RESET}").split(" ")
             mensaje_cifrado_int = [int(numero) for numero in mensaje_cifrado]
