@@ -1,6 +1,12 @@
 import rsa 
 import os 
+import sys
 
+RESET = "\033[0m"
+OKBLUE = "\033[94m" #Inputs en azul
+OKGREEN = "\033[92m" #Prints en verde
+OKRED = "\033[91m" #Errores en rojo
+OKPURPLE = "\033[35m"
 
 DIRECTORIO ="Usuarios"
 
@@ -9,7 +15,7 @@ class InfMayorSup(Exception):
 
 
 def print_titulo():
-    print(r"""    __  ____   ____  ____  ______   ___    ____  ____    ____  _____  ____   ____ 
+    print(rf"""{OKPURPLE}    __  ____   ____  ____  ______   ___    ____  ____    ____  _____  ____   ____ 
    /  ]|    \ |    ||    \|      | /   \  /    ||    \  /    ||     ||    | /    |
   /  / |  D  ) |  | |  o  )      ||     ||   __||  D  )|  o  ||   __| |  | |  o  |
  /  /  |    /  |  | |   _/|_|  |_||  O  ||  |  ||    / |     ||  |_   |  | |     |
@@ -17,7 +23,7 @@ def print_titulo():
 \     ||  .  \ |  | |  |    |  |  |     ||     ||  .  \|  |  ||  |    |  | |  |  |
  \____||__|\_||____||__|    |__|   \___/ |___,_||__|\_||__|__||__|   |____||__|__|
                                                                                   
-                                                """)
+                                                {RESET}""")
     
 
 def inputs() -> tuple[str, int, int, int]:
@@ -39,30 +45,25 @@ def inputs() -> tuple[str, int, int, int]:
         ValueError: Si los valores ingresados para los límites o el padding no pueden ser convertidos a enteros.
         InfMayorSup: Si el límite inferior es mayor o igual al límite superior.
     """
-    nombre = input("Cual es tu nombre?: \n")
-    lim_inf = input("Introduce el valor mínimo del primo usado para generar tu clave RSA: \n")
-    lim_sup = input("Introduce el valor máximo del primo usado para generar tu clave RSA: \n")
-    padding = input("Introduce el número de cifras padding para la comunicación: \n")
+    nombre = input(f"{OKBLUE}Cual es tu nombre?:{RESET} \n")
+    lim_inf = input(f"{OKBLUE}Introduce el valor mínimo del primo usado para generar tu clave RSA:{RESET} \n")
+    lim_sup = input(f"{OKBLUE}Introduce el valor máximo del primo usado para generar tu clave RSA:{RESET} \n")
+    padding = input(f"{OKBLUE}Introduce el número de cifras padding para la comunicación:{RESET} \n")
 
     try:
         lim_inf = abs(int(lim_inf))
         lim_sup = abs(int(lim_sup))
-    except ValueError:
-        print("Los límites no han sido introducidos correctamente")
+    except:
+        raise ValueError("Los valores ingresados para los límites no pueden ser convertidos a enteros")
 
-    try: 
-        if lim_inf >= lim_sup:
-            raise InfMayorSup()
-
-
-    except InfMayorSup:
-        print("El límite inferior es mayor que el superior")
+    if lim_inf >= lim_sup:
+        raise InfMayorSup("El límite inferior es mayor o igual que el superior")
 
     try:
         padding = abs(int(padding))
 
-    except ValueError:
-        print("El padding no ha sido introducido correctamente")
+    except:
+        raise ValueError("El padding no ha sido introducido correctamente")
 
     return nombre, lim_inf,lim_sup,padding
 
@@ -85,10 +86,9 @@ def crear_directorios(directorio: str) -> None:
         os.mkdir(directorio)
         print(f"Directorio '{directorio}' creado correctamente")
     except FileExistsError:
-        print(f"Directorio '{directorio}' ya existe.")
-   
+        print(f"{OKRED}Directorio '{directorio}' ya existe.{RESET}")
     except Exception as e:
-        print(f"Un error ha ocurrido: {e}")
+        print(f"{OKRED}Un error ha ocurrido: {e}{RESET}")
 
 
 def crear_ficheros_en_ruta(directorio: str, nombre: str, n: int, e: int, padding: int, d: int) -> None:
@@ -125,17 +125,19 @@ def crear_ficheros_en_ruta(directorio: str, nombre: str, n: int, e: int, padding
 
 if __name__ == "__main__":
     print_titulo()
-    nombre,lim_inf,lim_sup,padding = inputs()
+    try:
+        nombre,lim_inf,lim_sup,padding = inputs()
+    except ValueError as VE:
+        print(f"{OKRED} Error de valor: {VE}{RESET}")
+        sys.exit(1)
+    except InfMayorSup as IMS:
+        print(f"{OKRED} Error de límites: {IMS}{RESET}")
+        sys.exit(1)
     n,e,d = rsa.generar_claves(lim_inf,lim_sup)
     crear_directorios(DIRECTORIO)
     crear_ficheros_en_ruta(DIRECTORIO,nombre,n,e,padding,d)
-    
 
 
-
-    
-
-    
     
 
     

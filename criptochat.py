@@ -16,7 +16,6 @@ def leer_ficheros(fichero:str):
     datos = []
     with open(fichero,"r") as f:
         datos.extend([line.strip() for line in f])
-
     return datos 
 
 def cargar_claves(usuario1,usuario2):

@@ -38,7 +38,7 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     lista_primos = modular.lista_primos(min_primo,max_primo)
     p1,p2 = (random.choice(lista_primos),random.choice(lista_primos))
     n = p1*p2
-    phi_n = (p1-1)*(p2-1)
+    phi_n = modular.euler(n)
     e = random.randint(2,phi_n-1)
 
     while not modular.coprimos(phi_n,e):
