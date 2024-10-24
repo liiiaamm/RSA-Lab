@@ -173,7 +173,7 @@ def decodificar_cadena(m:List[int])->str:
     try:
         cadena_descodificada = ''.join([chr(ord) for ord in m])
         return cadena_descodificada
-    except ValueError:
+    except:
         print(OKRED, "Error de valor: El entero no representa un carácter unicode válido", RESET)
         raise ValueError
 

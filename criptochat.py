@@ -29,7 +29,7 @@ def cargar_claves(usuario1,usuario2):
         if not all([os.path.isfile(archivo) for archivo in usuarios]):
             raise UserNotFoundError()  
     except UserNotFoundError as error:
-        print("Algún usuario introducido no se encuentra en la base de datos")
+        print(f"{OKRED}Algún usuario introducido no se encuentra en la base de datos{RESET}")
         return None
 
 
@@ -76,8 +76,8 @@ if __name__ == "__main__":
     usuario2 = sys.argv[2]
 
     claves = cargar_claves(usuario1,usuario2)
-    
-    interactions(claves)
+    if claves is not None:
+        interactions(claves)
     
 
     
