@@ -46,6 +46,7 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     d = modular.inversa_mod_p(e,phi_n)
     return (n,e,d) 
 
+
 def aplicar_padding(m:int,digitos_padding:int)->int:
     """Dado un mensaje y un número de dígitos de padding, añade
     digitos_padding cifras aleatorias a la derecha del mensaje
@@ -68,6 +69,7 @@ def aplicar_padding(m:int,digitos_padding:int)->int:
     lim_inf,lim_sup = 10**(digitos_padding-1),10**(digitos_padding)-1
     padding_aplicado = int(str(m)+str(random.randint(lim_inf,lim_sup)))
     return padding_aplicado
+
 
 def eliminar_padding(m:int,digitos_padding:int)->int:
     """Dado un mensaje con padding de digitos_padding cifras al
@@ -93,6 +95,7 @@ def eliminar_padding(m:int,digitos_padding:int)->int:
     no_padding = str_m[:-digitos_padding]
     return int(no_padding)
 
+
 def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
     """Dado un mensaje m entero, un módulo y exponente que formen parte
     de una clave pública de RSA, con m<n*10^{-digitos_padding}, y un número
@@ -113,6 +116,7 @@ def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
     m_padding = aplicar_padding(m,digitos_padding)
     num_cfirado = modular.potencia_mod_p(m_padding,e,n)
     return num_cfirado
+
 
 def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
     """Dado un cifrado c entero que haya sido cifrado con RSA usando
@@ -136,6 +140,7 @@ def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
     descifrado_sin_padding = eliminar_padding(numero_descifrado,digitos_padding)
     return descifrado_sin_padding 
 
+
 def codificar_cadena(s:str)->List[int]:
     """Convierte una cadena de caracteres a la lista de
     enteros que representa el valor unicode cada uno de sus caracteres.
@@ -153,6 +158,7 @@ def codificar_cadena(s:str)->List[int]:
     """
     cadena_codificada = [ord(letra) for letra in s]
     return cadena_codificada    
+
 
 def decodificar_cadena(m:List[int])->str:
     """Convierte una lista de enteros que representen caracteres unicode
@@ -221,7 +227,6 @@ def descifrar_cadena_rsa(cList:List[int],n:int,d:int,digitos_padding:int)->str:
         raise ValueError
 
 
-
 def romper_clave(n:int,e:int)->int:
     """A partir de una clave pública válida (n,e), recupera la clave privada d tal que
     de = 1 (mod phi(n)).
@@ -260,4 +265,9 @@ def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
     Raises:
         ValueError: Si el mensaje no se corresponde con ningún texto plano que haya sido codificado con RSA sin padding.
     """
-    pass
+    try:
+        d = romper_clave(n,e)
+        mensaje = descifrar_cadena_rsa(cList,n,d,0)
+    except ValueError as VE:
+        print(OKRED, f"Error de valor: {VE}", RESET)
+        raise ValueError
