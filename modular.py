@@ -15,7 +15,7 @@ Descripción:
 Librería para la realización de cálculos y resolución de problemas de aritmética modular.
 """
 
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Optional
 import math
 import random
 
@@ -187,6 +187,45 @@ def factorizar(n:int)->Dict[int,int]:
     if n > 1:
         factores[n] = 1
     return factores
+
+def factorizar_pollar_rho(n: int) -> Optional[List[int]]:
+    """Factoriza un número n utilizando el algoritmo de Pollard's Rho.
+    
+    Args:
+        n (int): Número a factorizar.
+    
+    Returns:
+        Optional[List[int]]: Lista con dos factores primos de n si se encuentra, None si n es primo o no se encuentra factor.
+    
+    Raises:
+        ValueError: Si n es menor o igual a 1.
+    """
+    if n <= 1:
+        raise ValueError("n debe ser mayor que 1.")
+
+    if n % 2 == 0:
+        return [2]
+
+    x = random.randint(2, n - 1)
+    y = x
+    c = random.randint(1, n - 1)
+    d = 1
+    factores = []
+
+    while d == 1:
+        x = (potencia_mod_p(x, 2, n) + c) % n
+        y = (potencia_mod_p(y, 2, n) + c) % n
+        y = (potencia_mod_p(y, 2, n) + c) % n
+        d = mcd(abs(x - y), n)
+
+    if d != n:
+        factores.append(d)
+        p = d
+        q = n // p
+        if p != q:
+            factores.append(q)
+            return factores
+    return None
 
 def mcd(a: int, b: int) -> int:
     """

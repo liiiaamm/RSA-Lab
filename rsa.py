@@ -162,7 +162,10 @@ def descifrar_rsa(c:int,n:int,d:int,digitos_padding:int)->int:
     Raises: None
     """
     numero_descifrado = modular.potencia_mod_p(c,d,n)
-    descifrado_sin_padding = eliminar_padding(numero_descifrado,digitos_padding)
+    if digitos_padding != 0:
+        descifrado_sin_padding = eliminar_padding(numero_descifrado,digitos_padding)
+    else: 
+        descifrado_sin_padding = numero_descifrado
     return descifrado_sin_padding 
 
 
@@ -267,8 +270,12 @@ def romper_clave(n:int,e:int)->int:
         ValueError: Si no existe ninguna clave privada d compatible con la clave pública (n,e).
     """
     try:
-        p = modular.euler(n)
-        d = modular.inversa_mod_p(e,p)
+        factores = modular.factorizar_pollar_rho(n)
+        if factores is None or len(factores) != 2:
+            raise ValueError("No se encontraron dos factores primos distintos para n.")
+        p, q = factores[0], factores[1]
+        m = (p - 1) * (q - 1)
+        d = modular.inversa_mod_p(e, m)
         return d
     except ValueError as VE:
         print(OKRED, f"Error de valor: {VE}", RESET)
@@ -293,6 +300,7 @@ def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
     try:
         d = romper_clave(n,e)
         mensaje = descifrar_cadena_rsa(cList,n,d,0)
+        return mensaje
     except ValueError as VE:
         print(OKRED, f"Error de valor: {VE}", RESET)
         raise ValueError
