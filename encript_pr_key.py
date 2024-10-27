@@ -1,5 +1,3 @@
-import rsa
-
 CONTRASEÑA = "Alfaya"
 
 
