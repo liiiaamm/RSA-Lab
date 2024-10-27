@@ -305,6 +305,29 @@ def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
         print(OKRED, f"Error de valor: {VE}", RESET)
         raise ValueError
     
+def opcional(cList:List[int],n:int,e:int,padding)->str:
+    """Ejecuta un ataque de texto claro elegido sobre un mensaje que ha sido cifrado
+    con RSA plano sin usar padding a partir de su clave pública.
+
+    Args:
+        cList (List[int]): lisa de enteros que representan el mensaje cifrado
+        n (int): módulo para RSA
+        e (int): clave pública para RSA
+    
+    Returns:
+        str: texto plano descifrado para el mensaje cifrado cList
+
+    Raises:
+        ValueError: Si el mensaje no se corresponde con ningún texto plano que haya sido codificado con RSA sin padding.
+    """
+    try:
+        d = romper_clave(n,e)
+        mensaje = descifrar_cadena_rsa(cList,n,d,padding)
+        return mensaje
+    except ValueError as VE:
+        print(OKRED, f"Error de valor: {VE}", RESET)
+        raise ValueError
+    
 
 def to_ascii(contraseña: str) -> int:
     """
