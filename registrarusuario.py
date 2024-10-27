@@ -15,6 +15,18 @@ class InfMayorSup(Exception):
 
 
 def print_titulo():
+    """
+    Crea un título en grande con la palabra criptografía de color morado.
+    
+    Args:
+        None
+    
+    Raises:
+        None
+    
+    Returns:
+        None
+    """
     print(rf"""{OKPURPLE}    __  ____   ____  ____  ______   ___    ____  ____    ____  _____  ____   ____ 
    /  ]|    \ |    ||    \|      | /   \  /    ||    \  /    ||     ||    | /    |
   /  / |  D  ) |  | |  o  )      ||     ||   __||  D  )|  o  ||   __| |  | |  o  |

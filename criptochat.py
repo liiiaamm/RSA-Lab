@@ -13,12 +13,35 @@ class UserNotFoundError(Exception):
 
 
 def leer_ficheros(fichero:str):
+    """
+    Lee las líneas de un archivo y devuelve una lista de las mismas sin espacios en blanco.
+
+    Args:
+        fichero (str): La ruta del archivo que se desea leer.
+
+    Returns:
+        list: Lista de cadenas de texto representando cada línea del archivo sin espacios al inicio y final.
+    """
     datos = []
     with open(fichero,"r") as f:
         datos.extend([line.strip() for line in f])
     return datos 
 
 def cargar_claves(usuario1,usuario2):
+    """
+    Verifica si existen las claves de los usuarios especificados y carga las claves del primer usuario (públicas y privada)
+    y del segundo usuario (pública) si están disponibles.
+
+    Args:
+        usuario1 (str): Nombre del primer usuario para cargar sus claves públicas y privada.
+        usuario2 (str): Nombre del segundo usuario para cargar su clave pública.
+
+    Raises:
+        UserNotFoundError: Si alguno de los archivos de claves no existe.
+
+    Returns:
+        list: Lista con las claves de usuario, o None si algún archivo de claves no existe.
+    """
     usuario1_pr = f"Usuarios/priv_{usuario1}.txt"
     usuario1_pb = f"Usuarios/pub_{usuario1}.txt"
     usuario2_pb = f"Usuarios/pub_{usuario2}.txt"
@@ -41,6 +64,19 @@ def cargar_claves(usuario1,usuario2):
 
 
 def interactions(claves):
+    """
+    Permite la interacción del usuario para cifrar o descifrar mensajes mediante RSA, utilizando las claves 
+    previamente cargadas.
+
+    Args:
+        claves (list): Lista de claves de los usuarios que se usarán para cifrar y descifrar.
+
+    Raises:
+        ValueError: Si ocurre un error al intentar descifrar un mensaje no válido.
+
+    Returns:
+        None: No retorna ningún valor.
+    """
     usuario_pr_1 = claves[0]
     usuario_pb_1 = claves[1]
     usuario_pb_2 = claves[2]
@@ -67,6 +103,10 @@ def interactions(claves):
 
 
 if __name__ == "__main__":
+    """
+    Punto de entrada principal del programa. Verifica que se introduzcan dos usuarios y 
+    carga sus claves correspondientes para interactuar con el programa de cifrado/descifrado.
+    """
     if len(sys.argv) != 3:
         print(OKRED,"Uso: python criptochat.py <usuario1> <usuario2>",RESET)
         sys.exit(1)
