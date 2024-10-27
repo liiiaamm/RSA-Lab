@@ -19,16 +19,26 @@ RESET = "\033[0m"
 OKRED = "\033[91m"
 
 def generar_primo(min_primo,max_primo):
+    """
+    Genera un número primo aleatorio en el rango [min_primo, max_primo).
+
+    Args:
+        min_primo (int): Límite inferior del rango (incluido).
+        max_primo (int): Límite superior del rango (excluido).
+
+    Returns:
+        int: Un número primo aleatorio dentro del rango especificado.
+    """
+    
     small_primes = modular.lista_primos(2,1000)
     while True:
         # Generamos un número impar aleatorio de 20 dígitos
-        p = random.randrange(min_primo | 1, max_primo, 2)
+        p = random.randrange(min_primo | 1, max_primo, 2) #números únicamente impares, step 2, operación bit a bit en min_primo, se le suma 1 si es par, se deja igual si es impar 
         # Comprobamos si es divisible por algún pequeño primo
-        if any(p % sp == 0 for sp in small_primes):
-            continue
+        if any(p % sp == 0 for sp in small_primes): #devuelve true si el numero generado es primo de alguno. Si devuelve True, la funcion continue sale del bucle for y sigue con el flujo de codigo del bucle grande
+            continue #esto finaliza con la iteración entera del bucle en caso de que sea primo, por lo que no comprobaría el miller rabin
         # Realizamos el test de Miller-Rabin con más iteraciones
         if modular.es_primo_miller_rabin(p, k=10):
-            print(f"Primo encontrado: {p}")
             return p
             
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
