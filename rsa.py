@@ -19,10 +19,16 @@ RESET = "\033[0m"
 OKRED = "\033[91m"
 
 def generar_primo(min_primo,max_primo):
+    small_primes = modular.lista_primos(2,1000)
     while True:
-        p = random.randint(min_primo, max_primo)
-        if modular.es_primo_miller_rabin(p):
-            print(p)
+        # Generamos un número impar aleatorio de 20 dígitos
+        p = random.randrange(min_primo | 1, max_primo, 2)
+        # Comprobamos si es divisible por algún pequeño primo
+        if any(p % sp == 0 for sp in small_primes):
+            continue
+        # Realizamos el test de Miller-Rabin con más iteraciones
+        if modular.es_primo_miller_rabin(p, k=10):
+            print(f"Primo encontrado: {p}")
             return p
             
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
@@ -45,7 +51,7 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     p1,p2 = generar_primo(min_primo,max_primo),generar_primo(min_primo,max_primo)
     n = p1*p2
     phi_n = (p1-1)*(p2-1)
-    e = random.randint(2,phi_n-1)
+    e = 65537  
 
     while not modular.coprimos(phi_n,e):
         e = random.randint(2,phi_n-1)

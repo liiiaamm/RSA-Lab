@@ -85,34 +85,27 @@ def es_primo_miller_rabin(n: int, k: int = 6) -> bool:
     Returns:
         bool: True si n es probablemente primo, False si es compuesto.
     """
-    # Casos base
     if n in (2, 3):
         return True
     if n <= 1 or n % 2 == 0:
         return False
- 
-    # Descomposición de (n - 1) como 2^r * d
+    # Descomponemos n - 1 como 2^r * d
     r, d = 0, n - 1
     while d % 2 == 0:
         d //= 2
         r += 1
- 
-    # Realiza k iteraciones del test
+    # Realizamos k iteraciones del test
     for _ in range(k):
-        # Selecciona un número aleatorio en el rango [2, n - 2]
-        a = random.randint(2, n - 2)
-        x = potencia_mod_p(a, d, n)  # Calcula a^d % n
+        a = random.randrange(2, n - 1)
+        x = potencia_mod_p(a, d, n)
         if x == 1 or x == n - 1:
-            continue  # Probablemente primo para este a
-        # Realiza r-1 iteraciones adicionales
+            continue
         for _ in range(r - 1):
             x = potencia_mod_p(x, 2, n)
             if x == n - 1:
                 break
         else:
-            # Si no se cumple ninguna condición de primalidad, es compuesto
             return False
-    # Si pasa todas las iteraciones, es probablemente primo
     return True
 
 def estimar_primos(x):
@@ -337,18 +330,12 @@ def potencia_mod_p(base:int, exp:int, p:int) -> int:
     """
     if p == 0:
         raise ZeroDivisionError("El módulo no puede ser cero.")
-    if exp == 0:
-        return 1 % p  
-    if exp < 0:
-        raise ValueError("El exponente no puede ser negativo sin usar el inverso modular.")
-    if es_primo(p) and coprimos(base, p):
-        exp = exp % (p - 1)
     result = 1
-    base = base % p 
+    base = base % p
     while exp > 0:
         if exp % 2 == 1:
             result = (result * base) % p
-        exp = exp // 2
+        exp //= 2
         base = (base * base) % p
     return result
 
