@@ -18,6 +18,13 @@ import random
 RESET = "\033[0m"
 OKRED = "\033[91m"
 
+def generar_primo(min_primo,max_primo):
+    while True:
+        p = random.randint(min_primo, max_primo)
+        if modular.es_primo_miller_rabin(p):
+            print(p)
+            return p
+            
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     """Toma dos primos entre min_primo (incluido) y max_primo (excluido) y devuelve
     n,e,d
@@ -35,10 +42,9 @@ def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
 
     Raises: None
     """
-    lista_primos = modular.lista_primos(min_primo,max_primo)
-    p1,p2 = (random.choice(lista_primos),random.choice(lista_primos))
+    p1,p2 = generar_primo(min_primo,max_primo),generar_primo(min_primo,max_primo)
     n = p1*p2
-    phi_n = modular.euler(n)
+    phi_n = (p1-1)*(p2-1)
     e = random.randint(2,phi_n-1)
 
     while not modular.coprimos(phi_n,e):

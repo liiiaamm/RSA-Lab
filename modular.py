@@ -17,6 +17,8 @@ Librería para la realización de cálculos y resolución de problemas de aritm�
 
 from typing import Tuple, List, Dict
 import math
+import random
+
 class IncompatibleEquationError(Exception):
     pass
 class UndefinedError(Exception):
@@ -72,6 +74,46 @@ def lista_primos(a: int, b: int) -> List[int]:
                 lista[multiplo] = False
     primos = [numero for numero in range(b) if lista[numero] and numero >= a]
     return primos
+
+def es_primo_miller_rabin(n: int, k: int = 6) -> bool:
+    """
+    Realiza el test de primalidad de Miller-Rabin para determinar si un número es primo.
+    Args:
+        n (int): Número a verificar si es primo.
+        k (int): Número de iteraciones para asegurar la precisión del test.
+                 Un número mayor de iteraciones reduce la probabilidad de error.
+    Returns:
+        bool: True si n es probablemente primo, False si es compuesto.
+    """
+    # Casos base
+    if n in (2, 3):
+        return True
+    if n <= 1 or n % 2 == 0:
+        return False
+ 
+    # Descomposición de (n - 1) como 2^r * d
+    r, d = 0, n - 1
+    while d % 2 == 0:
+        d //= 2
+        r += 1
+ 
+    # Realiza k iteraciones del test
+    for _ in range(k):
+        # Selecciona un número aleatorio en el rango [2, n - 2]
+        a = random.randint(2, n - 2)
+        x = potencia_mod_p(a, d, n)  # Calcula a^d % n
+        if x == 1 or x == n - 1:
+            continue  # Probablemente primo para este a
+        # Realiza r-1 iteraciones adicionales
+        for _ in range(r - 1):
+            x = potencia_mod_p(x, 2, n)
+            if x == n - 1:
+                break
+        else:
+            # Si no se cumple ninguna condición de primalidad, es compuesto
+            return False
+    # Si pasa todas las iteraciones, es probablemente primo
+    return True
 
 def estimar_primos(x):
     """
