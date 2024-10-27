@@ -4,7 +4,7 @@ rsa.py
 Matemática Discreta - IMAT
 ICAI, Universidad Pontificia Comillas
 
-Grupo: GPxxx
+Grupo: GP05A
 Integrantes:
     - Liam Esgueva González 
     - Sergio Fernández Cordero
@@ -16,7 +16,7 @@ import modular
 from typing import Tuple,List
 import random
 RESET = "\033[0m"
-OKRED = "\033[91m" #Errores en rojo
+OKRED = "\033[91m"
 
 def generar_claves(min_primo:int,max_primo:int)-> Tuple[int,int,int]:
     """Toma dos primos entre min_primo (incluido) y max_primo (excluido) y devuelve
