@@ -15,6 +15,9 @@ Librería para la realización de cifrado y descifrado usando el algoritmo RSA.
 import modular 
 from typing import Tuple,List
 import random
+import encript_pr_key
+
+contraseña_usuario = encript_pr_key.CONTRASEÑA
 RESET = "\033[0m"
 OKRED = "\033[91m"
 
@@ -293,3 +296,53 @@ def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
     except ValueError as VE:
         print(OKRED, f"Error de valor: {VE}", RESET)
         raise ValueError
+    
+
+def to_ascii(contraseña: str) -> int:
+    """
+    Convierte una contraseña en un valor acumulado de códigos ASCII.
+
+    Args:
+        contraseña (str): La contraseña en formato de texto que se convertirá.
+
+    Returns:
+        int: La suma de los valores ASCII de cada carácter en la contraseña.
+    """
+    ord_contra = codificar_cadena(contraseña)
+    ord_contra_int = sum(ord_contra)
+    return ord_contra_int 
+
+
+def encrypt_pr_key(n: int, d: int, contraseña: str = contraseña_usuario) -> int:
+    """
+    Encripta la clave privada usando un valor ASCII de la contraseña y el módulo n.
+
+    Args:
+        n (int): El módulo RSA utilizado para la clave.
+        d (int): La clave privada que se desea encriptar.
+        contraseña (str, opcional): La contraseña que se convertirá en valor ASCII y se usará en la encriptación. 
+                                     Valor por defecto es `contraseña_usuario`.
+
+    Returns:
+        int: La clave privada encriptada como un entero.
+    """
+    c_ascii = to_ascii(contraseña)
+    d_encrypted = (d+c_ascii)%n 
+    return d_encrypted
+
+def decrypt_pr_key(d_encrypted: int, n: int, contraseña: str = contraseña_usuario) -> int:
+    """
+    Desencripta la clave privada encriptada usando el valor ASCII de la contraseña y el módulo n.
+
+    Args:
+        d_encrypted (int): La clave privada encriptada.
+        n (int): El módulo RSA utilizado para la clave.
+        contraseña (str, opcional): La contraseña usada en la encriptación, que se convierte en valor ASCII para la desencriptación. 
+                                     Valor por defecto es `contraseña_usuario`.
+
+    Returns:
+        int: La clave privada desencriptada como un entero.
+    """
+    c_ascii = to_ascii(contraseña)
+    d = (d_encrypted-c_ascii)%n
+    return d 

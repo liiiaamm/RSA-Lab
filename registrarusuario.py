@@ -127,13 +127,14 @@ def crear_ficheros_en_ruta(directorio: str, nombre: str, n: int, e: int, padding
     nombre_pr = f"priv_{nombre}.txt"
     ruta_pb = os.path.join(directorio,nombre_pb)
     ruta_pr = os.path.join(directorio,nombre_pr)
+    d_encrypted = rsa.encrypt_pr_key(n,d)
     with open(ruta_pb,"w") as pb:
         pb.write(f"{str(n)}\n")
         pb.write(f"{str(e)}\n")
         pb.write(f"{str(padding)}\n")
     
     with open(ruta_pr,"w") as pr:
-        pr.write(f"{str(d)}\n")
+        pr.write(f"{str(d_encrypted)}\n")
 
 if __name__ == "__main__":
     print_titulo()
