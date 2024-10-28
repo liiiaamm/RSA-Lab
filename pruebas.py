@@ -8,7 +8,7 @@ cList = [181992528320253001002616, 123338007587196271812300, 1358362331168737086
 n = 296877016766402663016241
 e = 176013469889
 p = 6
-mensaje_descifrado = rsa.opcional(cList, n, e, p)
+mensaje_descifrado = rsa.ataque_texto_con_padding(cList, n, e, p)
 t2 = time.time()
 
 print(mensaje_descifrado)
