@@ -305,7 +305,7 @@ def ataque_texto_elegido(cList:List[int],n:int,e:int)->str:
         print(OKRED, f"Error de valor: {VE}", RESET)
         raise ValueError
     
-def opcional(cList:List[int],n:int,e:int,padding)->str:
+def ataque_texto_con_padding(cList:List[int],n:int,e:int,padding)->str:
     """Ejecuta un ataque de texto claro elegido sobre un mensaje que ha sido cifrado
     con RSA plano sin usar padding a partir de su clave pública.
 
