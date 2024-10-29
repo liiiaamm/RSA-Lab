@@ -90,7 +90,7 @@ def interactions(claves):
             mensaje_cifrado = input(f"{OKBLUE}Escribe el mensaje cifrado(recuerda introdirlo con el formato número espacio número): {RESET}").split(" ")
             mensaje_cifrado_int = [int(numero) for numero in mensaje_cifrado]
             try:
-                descrifrado = rsa.descifrar_cadena_rsa(mensaje_cifrado_int,int(usuario_pb_1[0]),rsa.decrypt_pr_key(int(usuario_pr_1[0]),int(usuario_pb_1[0])),int(usuario_pb_1[2]))
+                descrifrado = rsa.descifrar_cadena_rsa(mensaje_cifrado_int,int(usuario_pb_1[0]),int(usuario_pr_1[0]),int(usuario_pb_1[0])),int(usuario_pb_1[2])
                 print(f"{OKGREEN}Tu mensaje descrifrado es: \n {descrifrado}{RESET}")
             except ValueError:
                 pass

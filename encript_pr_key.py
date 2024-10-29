@@ -1,6 +1,0 @@
-CONTRASEÑA = "Alfaya"
-
-
-
-    
-
