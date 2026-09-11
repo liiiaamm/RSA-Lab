@@ -89,6 +89,10 @@ def aplicar_padding(m:int,digitos_padding:int)->int:
         aplicar_padding(24,3)=24718
         aplicar_padding(24,3)=24845
     """
+    if digitos_padding < 0:
+        raise ValueError("digitos_padding must be non-negative")
+    if digitos_padding == 0:
+        return m
     lim_inf,lim_sup = 10**(digitos_padding-1),10**(digitos_padding)-1
     padding_aplicado = int(str(m)+str(random.randint(lim_inf,lim_sup)))
     return padding_aplicado
@@ -114,9 +118,11 @@ def eliminar_padding(m:int,digitos_padding:int)->int:
         aplicar_padding(2454,3)=2
         aplicar_padding(2432,2)=24
     """
-    str_m = str(m)
-    no_padding = str_m[:-digitos_padding]
-    return int(no_padding)
+    if digitos_padding < 0:
+        raise ValueError("digitos_padding must be non-negative")
+    if digitos_padding == 0:
+        return m
+    return m // (10 ** digitos_padding)
 
 
 def cifrar_rsa(m:int,n:int,e:int,digitos_padding:int)->int:
